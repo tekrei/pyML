@@ -13,8 +13,8 @@ from utility import *
 '''
 k-Nearest Neighbors implementation
 
-It doesn't use any library to perform KNN. 
-It use scikit-learn library for calculating various metrics and confusion matrix.
+- Doesn't use any library to perform KNN. 
+- Uses scikit-learn library for calculating various metrics and confusion matrix.
 
 It is possible to provide file name, k value and training-test data split ratio as arguments such as the following:
         python knn.py data/iris.csv 5 0.67
