@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
 '''
-A simple implementation of the perceptron and perceptron learning
+Neural Network demonstration with Backpropagation learning and the Iris dataset
 by M. Tim Jones
 from https://github.com/mtimjones/backprop
 Python code by tekrei
