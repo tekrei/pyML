@@ -7,6 +7,9 @@ Different machine learning algorithm implementations, inspired from various reso
 * [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression)
 * [K-Means](https://en.wikipedia.org/wiki/K-means_clustering)
 * [K-Nearest Neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
+* [Naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)
+* [Perceptron](https://en.wikipedia.org/wiki/Perceptron)
+* [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)
 
 ### Links & Resources
 * [scikit-learn machine learning library for Python](http://scikit-learn.org/)
