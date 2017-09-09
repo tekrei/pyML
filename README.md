@@ -10,6 +10,7 @@ Different machine learning algorithm implementations, inspired from various reso
 * [Naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)
 * [Perceptron](https://en.wikipedia.org/wiki/Perceptron)
 * [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)
+* [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree)
 
 ### Links & Resources
 * [scikit-learn machine learning library for Python](http://scikit-learn.org/)

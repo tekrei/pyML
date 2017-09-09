@@ -1,6 +1,6 @@
 #
 data/mnist*
-data/spoken_numbers_pcm*
+data/spoken_numbers_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
