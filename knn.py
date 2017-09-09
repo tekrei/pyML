@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 # coding=utf-8
-import sys
+import argparse
 import operator
+import sys
+
 import numpy
 
 from utility import *
 
+
 '''
 k-Nearest Neighbors implementation
 
-- Doesn't use any library to perform KNN. 
+- Doesn't use any library to perform KNN.
 - Uses scikit-learn library for calculating various metrics and confusion matrix.
 
 It is possible to provide file name, k value and training-test data split ratio as arguments such as the following:
@@ -25,11 +28,13 @@ It is tested with the following example data sets:
 
 The main source for the code is the following tutorial: Source: http://machinelearningmastery.com/tutorial-to-implement-k-nearest-neighbors-in-python-from-scratch/
 '''
+
+
 def get_neighbors(training, test, k):
     distances = []
     for x in range(len(training)):
         # without target
-        dist = euclidean(test[0:-1], training[x,0:-1])
+        dist = euclidean(test[0:-1], training[x, 0:-1])
         distances.append((training[x], dist))
     distances.sort(key=operator.itemgetter(1))
     neighbors = []
@@ -37,47 +42,47 @@ def get_neighbors(training, test, k):
         neighbors.append(distances[x][0])
     return neighbors
 
+
 def get_response(neighbors):
     class_votes = {}
     for x in range(len(neighbors)):
         response = neighbors[x][-1]
-        if response in class_votes: class_votes[response] += 1
-        else: class_votes[response] = 1
-    sorted_votes = sorted(class_votes.items(), key=operator.itemgetter(1), reverse=True)
+        if response in class_votes:
+            class_votes[response] += 1
+        else:
+            class_votes[response] = 1
+    sorted_votes = sorted(class_votes.items(),
+                          key=operator.itemgetter(1), reverse=True)
     return sorted_votes[0][0]
 
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", dest="file", type=str,
+                        default="data/iris.csv", help="data file")
+    parser.add_argument('-k', dest='k', default=5, type=int,
+                        help="number of neighbors to consider")
+    parser.add_argument('-s', '--split', dest='split', default=0.67, type=float,
+                        help="data split ratio")
+    return parser.parse_args()
+
+
 def main():
-    argc = len(sys.argv)
-    file_name = 'data/iris.csv'
-    k = 5
-    split = 0.67
-    if(argc==1):
-        print("Info: You can provide file name and k value as an argument: python knn.py file_name k_value split_value")
-    if(argc==2):
-        #file is given
-        file_name = sys.argv[1]
-    if(argc==3):
-        #file and k are given
-        file_name = sys.argv[1]
-        k = int(sys.argv[2])
-    if(argc==4):
-        #file, k and split are given
-        file_name = sys.argv[1]
-        k = int(sys.argv[2])
-        split = float(sys.argv[3])
+    args = get_args()
     # load data
-    dataSet = load_dataset(file_name)
-    training, test = split_dataset(dataSet, split)
-    print("Train set {0}".format(len(training)))
-    print("Test set {0}".format(len(test)))
+    training, test = split_dataset(load_dataset(args.file), args.split)
+    print("Training set size: %d" % (len(training)))
+    print("Testing set size: %d" % (len(test)))
     # generate predictions
-    predictions=[]
+    predictions = []
     actual = []
     for x in range(len(test)):
-        neighbors = get_neighbors(training, test[x], k)
+        neighbors = get_neighbors(training, test[x], args.k)
         result = get_response(neighbors)
         predictions.append(result)
         actual.append(test[x][-1])
     # calculate and display various scores
     display(actual, predictions)
+
+
 main()

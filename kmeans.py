@@ -1,39 +1,32 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=utf-8
 """
 @author: tekrei
 """
-from __future__ import division
-
-from random import sample
 import matplotlib.pyplot as plot
-from sklearn.cluster import KMeans as SKLKMeans
 import numpy
+from sklearn.cluster import KMeans as SKLKMeans
 
 from utility import euclidean
 
-class KMeans():
-    def cost(self, data, clusters, memberships):
-        squareSum = 0
-        for i, datum in enumerate(data):
-            squareSum += (euclidean(datum, clusters[memberships[i]]) ** 2)
-        return (1 / data.shape[0]) * squareSum
 
-    def cluster(self, data, clusterCount, iteration=1000):
+class KMeans():
+
+    def cluster(self, data, cluster_count, max_iteration=1000):
+        data_count = data.shape[0]
         # select the clusters randomly from data
-        dataCount = data.shape[0]
-        clusters = numpy.array(sample(data, clusterCount))
+        clusters = data[numpy.random.randint(
+            data_count, size=cluster_count), :]
         # assign random memberships to the data
-        memberships = numpy.zeros(dataCount, dtype=numpy.int8)
-        # flags for the stop criteria
-        changed = False
-        currentIteration = 0
-        previousCost = 1e308
+        memberships = numpy.zeros(data_count, dtype=numpy.int8)
+        iteration = 0
+        _inertia = 1e308
         # k-means loop starting
         while True:
+            changed = False
             # reset new cluster variables
-            newClusters = numpy.zeros((clusterCount, data.shape[1]))
-            newClusterSize = numpy.zeros(clusterCount)
+            _clusters = numpy.zeros((cluster_count, data.shape[1]))
+            _cluster_size = numpy.zeros(cluster_count)
 
             # CLUSTER ASSIGNMENT STEP
             # assign each data to the nearest cluster
@@ -50,50 +43,46 @@ class KMeans():
                     memberships[i] = n
                     changed = True
                 # store the sum of the all data belonging to the same cluster
-                newClusters[memberships[i]] = newClusters[memberships[i]] + datum
+                _clusters[memberships[i]] = _clusters[memberships[i]] + datum
                 # store the data count of cluster
-                newClusterSize[memberships[i]] += 1
+                _cluster_size[memberships[i]] += 1
 
             # UPDATE STEP
             # calculate new cluster centers using data cluster information
-            for j in range(clusterCount):
-                if newClusterSize[j] > 0:
-                    clusters[j] = newClusters[j] / newClusterSize[j]
+            clusters = numpy.divide(_clusters, _cluster_size[:, numpy.newaxis])
 
             # COST CALCULATION
-            cost = self.cost(data, clusters, memberships)
-            print "Iteration ",currentIteration," Cost:",cost
-            if previousCost == cost:
+            inertia = numpy.sum((data - clusters[memberships])**2)
+            print("iteration: %d cost: %f" % (iteration, inertia))
+            if _inertia == inertia:
                 break
             else:
-                previousCost = cost
-            currentIteration += 1
+                _inertia = inertia
+            iteration += 1
             # check for stop criteria
-            if currentIteration > iteration or changed is False:
+            if iteration > max_iteration or changed is False:
                 break
+        # print final inertia
+        print("inertia: %f" % numpy.sum((data - clusters[memberships])**2))
         # data cluster memberships and cluster centers are returned
-        self.clusterCenters = clusters
-        # calculate inertia
-        inertia = 0
-        for i, datum in enumerate(data):
-            inertia += euclidean(datum, clusters[memberships[i]])
-        print "inertia:",inertia
-        return memberships
+        return clusters, memberships
+
 
 if __name__ == "__main__":
     # testing
     ae = KMeans()
-    sampleData = numpy.random.rand(100,2)*10
-    clusterResult = ae.cluster(sampleData, 2)
+    data = numpy.random.rand(25, 2)
+    clusters, memberships = ae.cluster(data, 2)
     sklKMeans = SKLKMeans(n_clusters=2)
-    sklKMeans.fit(sampleData)
-    print "scikit-learn inertia:",sklKMeans.inertia_
+    sklKMeans.fit(data)
+    print("scikit-learn inertia: %f" % sklKMeans.inertia_)
     # plot results
     f, (ax1, ax2) = plot.subplots(1, 2, sharey=True)
-    ax1.scatter(sampleData[:,0],sampleData[:,1],c=clusterResult)
-    ax1.plot(ae.clusterCenters[:,0],ae.clusterCenters[:,1], 'g^')
+    ax1.scatter(data[:, 0], data[:, 1], c=memberships)
+    ax1.plot(clusters[:, 0], clusters[:, 1], 'g^')
     ax1.set_title("code")
-    ax2.scatter(sampleData[:,0],sampleData[:,1],c=sklKMeans.labels_)
-    ax2.plot(sklKMeans.cluster_centers_[:,0],sklKMeans.cluster_centers_[:,1], 'g^')
+    ax2.scatter(data[:, 0], data[:, 1], c=sklKMeans.labels_)
+    ax2.plot(sklKMeans.cluster_centers_[:, 0],
+             sklKMeans.cluster_centers_[:, 1], 'g^')
     ax2.set_title("scikit-learn")
     plot.show()

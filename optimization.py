@@ -122,7 +122,7 @@ def newton(f, f_, x0, e=1e-12):
     return x
 
 
-def f(x): return x**2 - 4*x + 1
+def f(x): return x**2 - 4 * x + 1
 
 
 def f_(x): return 2 * x - 4
