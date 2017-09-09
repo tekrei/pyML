@@ -1,12 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=utf-8
-'''
+"""
 Neural Network demonstration with Backpropagation learning and the Iris dataset
-by M. Tim Jones
-from https://github.com/mtimjones/backprop
+by M. Tim Jones from https://github.com/mtimjones/backprop
+
 Python code by tekrei
-'''
-from __future__ import division
+"""
 
 import random
 import math
@@ -174,7 +173,7 @@ def sigmoid(x): return ( 1.0 / ( 1.0 + numpy.exp( -x ) ) )
 def sigmoid_d( x ): return  ( x * ( 1.0 - x ) )
 
 class Backpropagation:
-    
+
     def __init__(self, n_input=4, n_hidden=25, n_output=3):
         # Neuron cell values
         self.inputs = numpy.ones(n_input+1)
@@ -211,7 +210,7 @@ class Backpropagation:
         return best
 
     def backpropagate(self, target, learning_rate):
-        # given a classification, backpropagate the error through the weights.        
+        # given a classification, backpropagate the error through the weights.
 
         # calculate output node error
         err_out = [(target[out] - self.outputs[out]) * sigmoid_d(self.outputs[out]) for out in range(len(self.outputs))]
@@ -244,21 +243,21 @@ class Backpropagation:
         for i in range(n_test):
             test = random.randrange(len(dataset))
             result = self.feed_forward(dataset[test][0]);
-            print("#{} {} classified as {} ({})").format(test, dataset[test][0], result, dataset[test][1]);
-            
+            print("#%d %s classified as %s (%s)"%(test, dataset[test][0], result, dataset[test][1]));
+
     def testAll(self):
         # test the network by all data
         correct = 0
         for i in range(len(dataset)):
             result = self.feed_forward(dataset[i][0]);
-            print("#{} {} classified as {} ({})").format(i, dataset[i][0], result, dataset[i][1]);
+            print("#%d %s classified as %s (%s)"%(i, dataset[i][0], result, dataset[i][1]));
             if(dataset[i][1][result]==1):
                 correct +=1
-        print("Classification rate {}").format(correct/len(dataset))
+        print("Classification rate %f"%(correct/len(dataset)))
 
 def main():
     nn = Backpropagation()
     nn.train()
     nn.test()
-    #nn.testAll()
+    nn.testAll()
 main()
