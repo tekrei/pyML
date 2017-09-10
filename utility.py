@@ -62,15 +62,36 @@ def getAccuracy(actual, predictions):
     return (totalCount - wrongCount) / totalCount * 100.0
 
 
-def display(actual, predictions):
+def display(actual, predictions, save=None):
     print("Accuracy: %f" % accuracy(actual, predictions))
     print("Precision: %f" % precision(actual, predictions))
-    print("Recall: %f" % recall(actual, predictions))
-    print("F1 score (manual):%f" % f1_manual(actual, predictions))
-    print("F1 score (scikit):%f" % f1_library(actual, predictions))
-    print("ROC AUC Score:%f" % roc_auc(actual, predictions))
+    r = recall(actual, predictions)
+    print("Recall: %f" % r)
+    #print("F1 score (manual):%f" % f1_manual(actual, predictions))
+    f1 = f1_library(actual, predictions)
+    print("F1 score (scikit):%f" % f1)
+    roc = roc_auc(actual, predictions)
+    print("ROC AUC Score:%f" % roc)
     # plot non-normalized confusion matrix
-    plot_confusion_matrix(actual, predictions)
+    plot_confusion_matrix(actual, predictions, save)
+    return [f1, roc]
+
+
+def plot_scores(scores, names, save=None):
+    scores = numpy.asarray(scores)
+    # roc_auc and f1 plot
+    plot.figure()
+    plot.scatter(scores[:, 0], scores[:, 1])
+    for i, txt in enumerate(names):
+        plot.annotate(txt, (scores[i, 0], scores[i, 1]))
+    plot.xlim(xmax=1.0)
+    plot.ylim(ymax=1.0)
+    plot.ylabel('ROC AUC Score')
+    plot.xlabel('F1 score')
+    if save:
+        plot.savefig(save)
+    else:
+        plot.show()
 
 
 def roc_auc(actual, predictions, average='weighted'):
@@ -79,7 +100,7 @@ def roc_auc(actual, predictions, average='weighted'):
     return roc_auc_score(label_binarize(actual, class_names), label_binarize(predictions, class_names), average=average)
 
 
-def plot_confusion_matrix(actual, predictions, normalize=False, title='Confusion matrix', cmap=plot.cm.Blues):
+def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix', cmap=plot.cm.Blues):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
@@ -102,11 +123,13 @@ def plot_confusion_matrix(actual, predictions, normalize=False, title='Confusion
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plot.text(j, i, cm[i, j], horizontalalignment="center",
                   color="white" if cm[i, j] > thresh else "black")
-
-    plot.tight_layout()
     plot.ylabel('True label')
     plot.xlabel('Predicted label')
-    plot.show()
+    if save:
+        plot.savefig(save)
+    else:
+        plot.show()
+    return cm.ravel()
 
 
 def calculateProbability(x, mean, stdev):
