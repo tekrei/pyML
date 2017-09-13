@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
-import numpy
-import scipy.optimize
-
-from utility import *
+import scipy.optimize as optimize
+from numpy import genfromtxt
 
 
 def compute_error(b, m, points):
@@ -46,7 +44,7 @@ def test_gd():
     Source: http://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/
     '''
     # read data
-    points = load_numbers("data/data.csv")
+    points = genfromtxt("data/spring.csv", delimiter=",")
     # initial y-intercept guess
     b0 = 0
     # initial slope guess
@@ -55,7 +53,7 @@ def test_gd():
     n_iter = 1000
     for i in range(n_iter):
         # perform GD iterations
-        b0, m0 = step_gradient(b0, m0, numpy.array(points), 0.0001)
+        b0, m0 = step_gradient(b0, m0, points, 0.0001)
     print("GD\ti=%d\tb=%f\tm=%f\te=%f\t(y=%f*x+%f)" %
           (n_iter, b0, m0, compute_error(b0, m0, points), m0, b0))
 
@@ -141,9 +139,9 @@ def main():
     # newton method
     newton(f, f_, 1)
     # scipy
-    print("SB\tx=%f" % scipy.optimize.bisect(f, 0, 2))
-    print("SS\tx=%f" % scipy.optimize.newton(f, 1))
-    print("SN\tx=%f" % scipy.optimize.newton(f, 1, f_))
+    print("SB\tx=%f" % optimize.bisect(f, 0, 2))
+    print("SS\tx=%f" % optimize.newton(f, 1))
+    print("SN\tx=%f" % optimize.newton(f, 1, f_))
 
 
 if __name__ == "__main__":

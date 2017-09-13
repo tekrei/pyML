@@ -1,6 +1,7 @@
-#
+# data and figures
 data/mnist*
 data/spoken_numbers_*
+data/creditcard.csv
 figures/
 
 # Byte-compiled / optimized / DLL files

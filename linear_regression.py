@@ -5,10 +5,9 @@
 Linear Regression example from Introduction to Computation and Programming Using Python
 '''
 import matplotlib.pyplot as plot
-import numpy as np
-from scipy.stats import stats
-
-from utility import *
+from numpy import (array, asarray, correlate, cov, genfromtxt, mean, median,
+                   polyfit, std, var)
+from scipy.stats import linregress
 
 
 def linear_fit_byhand(x_vals, y_vals):
@@ -36,12 +35,11 @@ def linear_fit_byhand(x_vals, y_vals):
               str(round(k)) + ", RSquare = " + str(r_square(y_vals, est_yvals)))
 
 
-def linregress(x_vals, y_vals):
+def linear_regression(x_vals, y_vals):
     '''
     least-squares regression of scipy
     '''
-    a_value, b_value, r_value, p_value, std_err = stats.linregress(
-        x_vals, y_vals)
+    a_value, b_value, r_value, p_value, std_err = linregress(x_vals, y_vals)
     est_yvals = a_value * x_vals + b_value
     k = 1 / a_value
     plot.plot(x_vals, est_yvals, label='Least-squares fit, k = ' +
@@ -53,8 +51,8 @@ def linear_fit(x_vals, y_vals):
     Calculate regression line using linear fit
     y = ax + b
     '''
-    a_value, b_value = np.polyfit(x_vals, y_vals, 1)
-    est_yvals = a_value * np.array(x_vals) + b_value
+    a_value, b_value = polyfit(x_vals, y_vals, 1)
+    est_yvals = a_value * array(x_vals) + b_value
     # calculate spring constant
     k = 1 / a_value
     # plot regression line
@@ -67,7 +65,7 @@ def quadratic_fit(x_vals, y_vals):
     cubic fit
     ax^2+bx+c
     '''
-    a_value, b_value, c_value = np.polyfit(x_vals, y_vals, 2)
+    a_value, b_value, c_value = polyfit(x_vals, y_vals, 2)
     est_yvals = a_value * (x_vals ** 2) + b_value * (x_vals) + c_value
     plot.plot(x_vals, est_yvals, label='Quadratic fit, RSquare = ' +
               str(r_square(y_vals, est_yvals)))
@@ -78,7 +76,7 @@ def cubic_fit(x_vals, y_vals):
     cubic fit
     ax^3+bx^2+cx+d
     '''
-    a_value, b_value, c_value, d_value = np.polyfit(x_vals, y_vals, 3)
+    a_value, b_value, c_value, d_value = polyfit(x_vals, y_vals, 3)
     est_yvals = a_value * (x_vals ** 3) + b_value * (x_vals ** 2)
     est_yvals += c_value * x_vals + d_value
     plot.plot(x_vals, est_yvals, label='Cubic fit, RSquare = ' +
@@ -86,12 +84,12 @@ def cubic_fit(x_vals, y_vals):
 
 
 def printStatisticalSummary(x_vals, y_vals):
-    print("Mean(x)=%s Mean(Y)=%s" % (np.mean(x_vals), np.mean(y_vals)))
-    print("Median(x)=%s Median(Y)=%s" % (np.median(x_vals), np.median(y_vals)))
-    print("StdDev(x)=%s StdDev(Y)=%s" % (np.std(x_vals), np.std(y_vals)))
-    print("Var(x)=%s Var(Y)=%s" % (np.var(x_vals), np.var(y_vals)))
-    print("Cov(x,y)=%s" % np.cov(x_vals, y_vals))
-    print("Cor(x,y)=%s" % np.correlate(x_vals, y_vals))
+    print("Mean(x)=%s Mean(Y)=%s" % (mean(x_vals), mean(y_vals)))
+    print("Median(x)=%s Median(Y)=%s" % (median(x_vals), median(y_vals)))
+    print("StdDev(x)=%s StdDev(Y)=%s" % (std(x_vals), std(y_vals)))
+    print("Var(x)=%s Var(Y)=%s" % (var(x_vals), var(y_vals)))
+    print("Cov(x,y)=%s" % cov(x_vals, y_vals))
+    print("Cor(x,y)=%s" % correlate(x_vals, y_vals))
 
 
 def plot_data(vals):
@@ -99,8 +97,8 @@ def plot_data(vals):
     plot x and y values together with regression line
     '''
 
-    x_vals = np.asarray([i[0] * 9.81 for i in vals])
-    y_vals = np.asarray([i[1] for i in vals])
+    x_vals = asarray([i[0] * 9.81 for i in vals])
+    y_vals = asarray([i[1] for i in vals])
 
     # plot measurement values
     plot.plot(x_vals, y_vals, 'bo', label='Measured displacements')
@@ -109,7 +107,7 @@ def plot_data(vals):
     plot.ylabel('Distance (meters)')
     linear_fit_byhand(x_vals, y_vals)
     linear_fit(x_vals, y_vals)
-    linregress(x_vals, y_vals)
+    linear_regression(x_vals, y_vals)
     quadratic_fit(x_vals, y_vals)
     cubic_fit(x_vals, y_vals)
     printStatisticalSummary(x_vals, y_vals)
@@ -135,7 +133,7 @@ def r_square(measured, estimated):
 
 
 if __name__ == '__main__':
-    plot_data(np.genfromtxt("data/spring.csv", delimiter=","))
+    plot_data(genfromtxt("data/spring.csv", delimiter=","))
     plot.legend(loc='best')
     plot.tight_layout()
     plot.show()

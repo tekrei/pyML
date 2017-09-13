@@ -4,7 +4,9 @@
 @author: tekrei
 """
 import matplotlib.pyplot as plot
-import numpy
+from numpy import sum as npsum
+from numpy import divide, int8, newaxis, ones, zeros
+from numpy.random import rand, randint
 from sklearn.cluster import KMeans as SKLKMeans
 
 from utility import euclidean
@@ -15,18 +17,17 @@ class KMeans():
     def cluster(self, data, cluster_count, max_iteration=1000):
         data_count = data.shape[0]
         # select the clusters randomly from data
-        clusters = data[numpy.random.randint(
-            data_count, size=cluster_count), :]
+        clusters = data[randint(data_count, size=cluster_count), :]
         # assign random memberships to the data
-        memberships = numpy.zeros(data_count, dtype=numpy.int8)
+        memberships = zeros(data_count, dtype=int8)
         iteration = 0
         _inertia = 1e308
         # k-means loop starting
         while True:
             changed = False
             # reset new cluster variables
-            _clusters = numpy.zeros((cluster_count, data.shape[1]))
-            _cluster_size = numpy.zeros(cluster_count)
+            _clusters = zeros((cluster_count, data.shape[1]))
+            _cluster_size = zeros(cluster_count)
 
             # CLUSTER ASSIGNMENT STEP
             # assign each data to the nearest cluster
@@ -49,10 +50,10 @@ class KMeans():
 
             # UPDATE STEP
             # calculate new cluster centers using data cluster information
-            clusters = numpy.divide(_clusters, _cluster_size[:, numpy.newaxis])
+            clusters = divide(_clusters, _cluster_size[:, newaxis])
 
             # COST CALCULATION
-            inertia = numpy.sum((data - clusters[memberships])**2)
+            inertia = npsum((data - clusters[memberships])**2)
             print("iteration: %d cost: %f" % (iteration, inertia))
             if _inertia == inertia:
                 break
@@ -63,7 +64,7 @@ class KMeans():
             if iteration > max_iteration or changed is False:
                 break
         # print final inertia
-        print("inertia: %f" % numpy.sum((data - clusters[memberships])**2))
+        print("inertia: %f" % npsum((data - clusters[memberships])**2))
         # data cluster memberships and cluster centers are returned
         return clusters, memberships
 
@@ -71,7 +72,7 @@ class KMeans():
 if __name__ == "__main__":
     # testing
     ae = KMeans()
-    data = numpy.random.rand(25, 2)
+    data = rand(25, 2)
     clusters, memberships = ae.cluster(data, 2)
     sklKMeans = SKLKMeans(n_clusters=2)
     sklKMeans.fit(data)

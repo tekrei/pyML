@@ -3,7 +3,7 @@
 Different machine learning algorithm implementations, inspired from various resources.
 
 ### Implemented Algorithms
-* [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent)
+* Optimization and root finding: [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent), [Bisection Method](https://en.wikipedia.org/wiki/Bisection_method), [Secant Method](https://en.wikipedia.org/wiki/Secant_method), [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method)
 * [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression)
 * [K-Means](https://en.wikipedia.org/wiki/K-means_clustering)
 * [K-Nearest Neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)

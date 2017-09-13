@@ -6,29 +6,26 @@ by M. Tim Jones from https://github.com/mtimjones/perceptron
 
 Python code by tekrei
 '''
-from __future__ import division
-
-import random
+from random import random
 
 
 class Perceptron:
 
     def initialize(self, wsize):
-        random.seed()
         # initialize the weights with random values
         self.weights = []
         for i in range(wsize):
-            self.weights.append(random.random())
+            self.weights.append(random())
 
     def feedforward(self, inputs):
-        totalSum = 0.0
+        total_sum = 0.0
         # calculate inputs * weights
         for i in range(len(inputs)):
-            totalSum += self.weights[i] * inputs[i]
+            total_sum += self.weights[i] * inputs[i]
         # add in the bias
-        totalSum += self.weights[i]
+        total_sum += self.weights[i]
         # activation function (1 if value >= 1.0)
-        if(totalSum >= 1.0):
+        if(total_sum >= 1.0):
             return 1
         return 0
 

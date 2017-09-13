@@ -1,60 +1,30 @@
-import csv
-import itertools
-import math
-import random
+from itertools import product
+from random import random
 
 import matplotlib.pyplot as plot
-import numpy
+from numpy import arange, asarray, newaxis, sqrt
+from pandas import read_csv
 from sklearn.metrics import *
 from sklearn.preprocessing import label_binarize
 
 
 def euclidean(A, B):
-    return numpy.sqrt(((A - B)**2).sum())
+    return sum(sqrt((A - B)**2))
 
 
-def load_dataset(filename):
-    with open(filename, 'rt') as csvfile:
-        # all values without quotes are considered numeric
-        lines = csv.reader(csvfile, quoting=csv.QUOTE_NONNUMERIC)
-        return list(lines)
+def load_dataset(data_file, split=True, binarize=False):
+    dataset = read_csv(data_file, sep=",").sample(
+        frac=1).reset_index(drop=True)
+    if not split:
+        return asarray(dataset)
+    target = dataset.ix[:, -1]
+    if binarize:
+        target = binarize_labels(target)
+    dataset = asarray(dataset.ix[:, 0:-1])
+    return dataset, target
 
 
-def load_numbers(filename, delimiter=","):
-    return numpy.genfromtxt(filename, delimiter=delimiter)
-
-
-def mean(numbers):
-    return numpy.mean(numbers)
-
-
-def stdev(numbers):
-    return numpy.std(numbers)
-
-
-def f1_manual(actual, predictions, average='weighted'):
-    p = precision(actual, predictions, average)
-    r = recall(actual, predictions, average)
-    return 2 * ((p * r) / (p + r))
-
-
-def f1_library(actual, predictions, average='weighted'):
-    return f1_score(actual, predictions, average=average)
-
-
-def recall(actual, predictions, average='weighted'):
-    return recall_score(actual, predictions, average=average)
-
-
-def precision(actual, predictions, average='weighted'):
-    return precision_score(actual, predictions, average=average)
-
-
-def accuracy(actual, predictions):
-    return accuracy_score(actual, predictions)
-
-
-def getAccuracy(actual, predictions):
+def get_accuracy(actual, predictions):
     totalCount = len(actual)
     wrongCount = (actual != predictions).sum()
     print("Number of mislabeled points out of a total %d points : %d" % (
@@ -63,13 +33,12 @@ def getAccuracy(actual, predictions):
 
 
 def display(actual, predictions, save=None):
-    print("Accuracy: %f" % accuracy(actual, predictions))
-    print("Precision: %f" % precision(actual, predictions))
-    r = recall(actual, predictions)
-    print("Recall: %f" % r)
-    #print("F1 score (manual):%f" % f1_manual(actual, predictions))
-    f1 = f1_library(actual, predictions)
-    print("F1 score (scikit):%f" % f1)
+    print("Accuracy: %f" % accuracy_score(actual, predictions))
+    print("Precision: %f" % precision_score(
+        actual, predictions, average="weighted"))
+    print("Recall: %f" % recall_score(actual, predictions, average="weighted"))
+    f1 = f1_score(actual, predictions, average="weighted")
+    print("F1 score:%f" % f1)
     roc = roc_auc(actual, predictions)
     print("ROC AUC Score:%f" % roc)
     # plot non-normalized confusion matrix
@@ -78,7 +47,7 @@ def display(actual, predictions, save=None):
 
 
 def plot_scores(scores, names, save=None):
-    scores = numpy.asarray(scores)
+    scores = asarray(scores)
     # roc_auc and f1 plot
     plot.figure()
     plot.scatter(scores[:, 0], scores[:, 1])
@@ -92,6 +61,10 @@ def plot_scores(scores, names, save=None):
         plot.savefig(save)
     else:
         plot.show()
+
+
+def binarize_labels(actual):
+    return label_binarize(actual, list(set(actual)))
 
 
 def roc_auc(actual, predictions, average='weighted'):
@@ -112,15 +85,15 @@ def plot_confusion_matrix(actual, predictions, save=False, normalize=False, titl
     plot.imshow(cm, interpolation='nearest', cmap=cmap)
     plot.title(title)
     plot.colorbar()
-    tick_marks = numpy.arange(len(classes))
+    tick_marks = arange(len(classes))
     plot.xticks(tick_marks, classes, rotation=45)
     plot.yticks(tick_marks, classes)
 
     if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, numpy.newaxis]
+        cm = cm.astype('float') / cm.sum(axis=1)[:, newaxis]
 
     thresh = cm.max() / 2.0
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+    for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
         plot.text(j, i, cm[i, j], horizontalalignment="center",
                   color="white" if cm[i, j] > thresh else "black")
     plot.ylabel('True label')
@@ -132,22 +105,16 @@ def plot_confusion_matrix(actual, predictions, save=False, normalize=False, titl
     return cm.ravel()
 
 
-def calculateProbability(x, mean, stdev):
-    '''
-    Gaussian Probability Density Function calculation
-    '''
-    if mean == 0 or stdev == 0:
-        return 0
-    exponent = math.exp(-(math.pow(x - mean, 2) / (2 * math.pow(stdev, 2))))
-    return (1 / (math.sqrt(2 * math.pi) * stdev)) * exponent
-
-
-def split_dataset(dataset, splitFactor):
-    trainingSet = []
-    testSet = []
+def split_dataset(dataset, target, split_factor):
+    train_x = []
+    train_y = []
+    test_x = []
+    test_y = []
     for x in range(len(dataset) - 1):
-        if random.random() < splitFactor:
-            trainingSet.append(dataset[x])
+        if random() < split_factor:
+            train_x.append(dataset[x])
+            train_y.append(target[x])
         else:
-            testSet.append(dataset[x])
-    return numpy.asarray(trainingSet), numpy.asarray(testSet)
+            test_x.append(dataset[x])
+            test_y.append(target[x])
+    return asarray(train_x), asarray(train_y), asarray(test_x), asarray(test_y)

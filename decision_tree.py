@@ -14,10 +14,10 @@ It is tested with the following example data sets:
 Source: http://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/
 """
 
-import argparse
-from random import randrange, seed
+from argparse import ArgumentParser
+from random import randrange
 
-from sklearn.metrics import *
+from sklearn.metrics import accuracy_score
 
 from utility import *
 
@@ -39,22 +39,14 @@ def evaluate_algorithm(dataset, algorithm, n_folds, *args):
     folds = cross_validation_split(dataset, n_folds)
     scores = list()
     for fold in folds:
-        train_set = list(folds)
-        train_set.remove(fold)
-        train_set = sum(train_set, [])
-        test_set = list()
-        for row in fold:
-            row_copy = list(row)
-            test_set.append(row_copy)
-            row_copy[-1] = None
-        predicted = algorithm(train_set, test_set, *args)
+        train_set = sum([f for f in folds if f is not fold], [])
+        predictions = algorithm(train_set, fold.copy(), *args)
         actual = [row[-1] for row in fold]
-        scores.append(accuracy_score(actual, predicted))
+        scores.append(accuracy_score(actual, predictions))
     return scores
 
 
 def test_split(index, value, dataset):
-    """ split a dataset based on an attribute and an attribute value """
     left, right = list(), list()
     for row in dataset:
         if row[index] < value:
@@ -64,23 +56,28 @@ def test_split(index, value, dataset):
     return left, right
 
 
-def gini_index(groups, class_values):
-    """ calculate the Gini index for a split dataset """
+def gini_index(groups, classes):
+    # count all samples at split point
+    n_instances = float(sum([len(group) for group in groups]))
+    # sum weighted Gini index for each group
     gini = 0.0
-    for class_value in class_values:
-        for group in groups:
-            size = len(group)
-            if size == 0:
-                continue
-            proportion = [row[-1]
-                          for row in group].count(class_value) / float(size)
-            gini += (proportion * (1.0 - proportion))
+    for group in groups:
+        size = float(len(group))
+        # avoid divide by zero
+        if size == 0:
+            continue
+        score = 0.0
+        # score the group based on the score for each class
+        for class_val in classes:
+            p = [row[-1] for row in group].count(class_val) / size
+            score += p * p
+        # weight the group score by its relative size
+        gini += (1.0 - score) * (size / n_instances)
     return gini
 
 
 def get_split(dataset):
-    """ select the best split point for a dataset """
-    class_values = list(set(row[-1] for row in dataset))
+    class_values = {row[-1] for row in dataset}
     b_index, b_value, b_score, b_groups = 999, 999, 999, None
     for index in range(len(dataset[0]) - 1):
         for row in dataset:
@@ -92,13 +89,11 @@ def get_split(dataset):
 
 
 def to_terminal(group):
-    """ create a terminal node value """
     outcomes = [row[-1] for row in group]
     return max(set(outcomes), key=outcomes.count)
 
 
 def split(node, max_depth, min_size, depth):
-    """ create child splits for a node or make terminal """
     left, right = node['groups']
     del(node['groups'])
     # check for a no split
@@ -124,14 +119,12 @@ def split(node, max_depth, min_size, depth):
 
 
 def build_tree(train, max_depth, min_size):
-    """ Build a decision tree """
     root = get_split(train)
     split(root, max_depth, min_size, 1)
     return root
 
 
 def predict(node, row):
-    """ make a prediction with a decision tree """
     if row[node['index']] < node['value']:
         if isinstance(node['left'], dict):
             return predict(node['left'], row)
@@ -150,7 +143,7 @@ def decision_tree(train, test, max_depth, min_size):
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("-f", "--file", dest="file", type=str,
                         default="data/banknote.csv", help="data file")
     parser.add_argument('-n', '--nfolds', dest='n_folds', default=5, type=int,
@@ -163,10 +156,9 @@ def get_args():
 
 
 def main():
-    seed(1)
     args = get_args()
     # load and prepare data
-    dataset = load_dataset(args.file)
+    dataset = load_dataset(args.file, split=False)
     # dataset, algorithm to run, number of folds, maximum depth, minimum size
     scores = evaluate_algorithm(
         dataset, decision_tree, args.n_folds, args.max_depth, args.min_size)

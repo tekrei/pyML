@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 # coding=utf-8
-import argparse
-import operator
-import sys
+from argparse import ArgumentParser
+from operator import itemgetter
 
-import numpy
-
-from utility import *
+from utility import display, euclidean, load_dataset, split_dataset
 
 
 '''
@@ -31,38 +28,37 @@ The main source for the code is the following tutorial: Source: http://machinele
 
 
 def get_neighbors(training, test, k):
-    distances = []
+    distances = {}
     for x in range(len(training)):
-        # without target
-        dist = euclidean(test[0:-1], training[x, 0:-1])
-        distances.append((training[x], dist))
-    distances.sort(key=operator.itemgetter(1))
+        dist = euclidean(test, training[x])
+        distances[x] = dist
+    distances = sorted(distances.items(), key=itemgetter(1))
     neighbors = []
-    for x in range(k):
-        neighbors.append(distances[x][0])
+    for _ in range(k):
+        neighbors.append(distances.pop()[0])
     return neighbors
 
 
-def get_response(neighbors):
+def get_response(neighbors, target):
     class_votes = {}
-    for x in range(len(neighbors)):
-        response = neighbors[x][-1]
+    for x in neighbors:
+        response = target[x]
         if response in class_votes:
             class_votes[response] += 1
         else:
             class_votes[response] = 1
     sorted_votes = sorted(class_votes.items(),
-                          key=operator.itemgetter(1), reverse=True)
+                          key=itemgetter(1), reverse=True)
     return sorted_votes[0][0]
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("-f", "--file", dest="file", type=str,
-                        default="data/iris.csv", help="data file")
+                        default="data/forestfires.csv", help="data file")
     parser.add_argument('-k', dest='k', default=5, type=int,
                         help="number of neighbors to consider")
-    parser.add_argument('-s', '--split', dest='split', default=0.67, type=float,
+    parser.add_argument('-s', '--split', dest='split', default=0.8, type=float,
                         help="data split ratio")
     return parser.parse_args()
 
@@ -70,17 +66,19 @@ def get_args():
 def main():
     args = get_args()
     # load data
-    training, test = split_dataset(load_dataset(args.file), args.split)
-    print("Training set size: %d" % (len(training)))
-    print("Testing set size: %d" % (len(test)))
+    dataset, target = load_dataset(args.file)
+    train_x, train_y, test_x, test_y = split_dataset(
+        dataset, target, args.split)
+    print("Training set size: %d" % (len(train_x)))
+    print("Testing set size: %d" % (len(test_x)))
     # generate predictions
     predictions = []
     actual = []
-    for x in range(len(test)):
-        neighbors = get_neighbors(training, test[x], args.k)
-        result = get_response(neighbors)
+    for x in range(len(test_x)):
+        neighbors = get_neighbors(train_x, test_x[x], args.k)
+        result = get_response(neighbors, train_y)
         predictions.append(result)
-        actual.append(test[x][-1])
+        actual.append(test_y[x])
     # calculate and display various scores
     display(actual, predictions)
 
