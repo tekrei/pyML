@@ -17,10 +17,10 @@ def load_dataset(data_file, split=True, binarize=False):
         frac=1).reset_index(drop=True)
     if not split:
         return asarray(dataset)
-    target = dataset.ix[:, -1]
+    target = dataset.iloc[:, -1]
     if binarize:
         target = binarize_labels(target)
-    dataset = asarray(dataset.ix[:, 0:-1])
+    dataset = asarray(dataset.iloc[:, 0:-1])
     return dataset, target
 
 
@@ -33,14 +33,13 @@ def get_accuracy(actual, predictions):
 
 
 def display(actual, predictions, save=None):
-    print("Accuracy: %f" % accuracy_score(actual, predictions))
-    print("Precision: %f" % precision_score(
-        actual, predictions, average="weighted"))
-    print("Recall: %f" % recall_score(actual, predictions, average="weighted"))
+    print(f"Accuracy: {accuracy_score(actual, predictions)}")
+    print(f"Precision: {precision_score(actual, predictions, average='weighted')}")
+    print(f"Recall: {recall_score(actual, predictions, average='weighted')}")
     f1 = f1_score(actual, predictions, average="weighted")
-    print("F1 score:%f" % f1)
+    print(f"F1 score: {f1}")
     roc = roc_auc(actual, predictions)
-    print("ROC AUC Score:%f" % roc)
+    print(f"ROC AUC Score: {roc}")
     # plot non-normalized confusion matrix
     plot_confusion_matrix(actual, predictions, save)
     return [f1, roc]
