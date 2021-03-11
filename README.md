@@ -4,15 +4,15 @@ Different machine learning algorithm implementations, inspired from various reso
 
 ## Usage
 
-1. Install dependencies
+Install dependencies
 
    poetry update
 
-2. Start JypterLab
+Start JypterLab
 
    poetry run jupyter lab
 
-   or
+or
 
    poetry shell
    jupyter lab
