@@ -6,16 +6,16 @@ Different machine learning algorithm implementations, inspired from various reso
 
 Install dependencies
 
-   poetry update
+    poetry update
 
 Start JypterLab
 
-   poetry run jupyter lab
+    poetry run jupyter lab
 
 or
 
-   poetry shell
-   jupyter lab
+    poetry shell
+    jupyter lab
 
 ## Implemented Algorithms
 
