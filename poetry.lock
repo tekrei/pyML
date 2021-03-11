@@ -298,7 +298,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "defusedxml"
-version = "0.7.0"
+version = "0.7.1"
 description = "XML bomb protection for Python stdlib modules"
 category = "main"
 optional = false
@@ -675,7 +675,7 @@ simpervisor = ">=0.4"
 
 [[package]]
 name = "jupyterlab"
-version = "3.0.9"
+version = "3.0.10"
 description = "The JupyterLab server extension."
 category = "main"
 optional = false
@@ -1168,7 +1168,7 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.16"
+version = "3.0.17"
 description = "Library for building powerful interactive command lines in Python"
 category = "main"
 optional = false
@@ -1587,7 +1587,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bd825eed122134fd2fe891b4f472098d803a2419c68b346047a37920c9ef6028"
+content-hash = "4664ff2e591c7bffacaa3502ea92c65f03d4e5e043e4e2324d1d8dbeb6368e3d"
 
 [metadata.files]
 aiohttp = [
@@ -1809,8 +1809,8 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 defusedxml = [
-    {file = "defusedxml-0.7.0-py2.py3-none-any.whl", hash = "sha256:a290cad10346ed366c8a0133d868eaf6585ec6afdd0c511286cdb11f5fc3d285"},
-    {file = "defusedxml-0.7.0.tar.gz", hash = "sha256:86b15d9e3c639de79f4cb38aeffea3281f62aff78dde7d798e1352c63bfa6ea0"},
+    {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
+    {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
 easydict = [
     {file = "easydict-1.9.tar.gz", hash = "sha256:3f3f0dab07c299f0f4df032db1f388d985bb57fa4c5be30acd25c5f9a516883b"},
@@ -1918,8 +1918,8 @@ jupyter-server-proxy = [
     {file = "jupyter_server_proxy-1.6.0-py3-none-any.whl", hash = "sha256:73607a43a5f82baa17a2030b5284b2ee7118c0d6eb4cafbab48552a60a4b5b42"},
 ]
 jupyterlab = [
-    {file = "jupyterlab-3.0.9-py3-none-any.whl", hash = "sha256:03dc942696eeb6ecebe3482dec1973a8287f1a3973aca04fb64f13497029280b"},
-    {file = "jupyterlab-3.0.9.tar.gz", hash = "sha256:70aa808a1adc06e35701500a0b1cd2f472ad55b8d890153cb8bdfbd30b279646"},
+    {file = "jupyterlab-3.0.10-py3-none-any.whl", hash = "sha256:971e863415742b66cf46bcc5d22aaafaa0e8da177149b8f50c6cc04772fe2c53"},
+    {file = "jupyterlab-3.0.10.tar.gz", hash = "sha256:fdc6020d81e8888755ac4b30a08a89520c210d2eda400cfea0c0972d2591cfec"},
 ]
 jupyterlab-code-formatter = [
     {file = "jupyterlab_code_formatter-1.4.4-py3-none-any.whl", hash = "sha256:57dd3d9dd669e21a35032e81207451ae7f7648353a47db6be75bfccebc3c0502"},
@@ -2273,8 +2273,8 @@ prometheus-client = [
     {file = "prometheus_client-0.9.0.tar.gz", hash = "sha256:9da7b32f02439d8c04f7777021c304ed51d9ec180604700c1ba72a4d44dceb03"},
 ]
 prompt-toolkit = [
-    {file = "prompt_toolkit-3.0.16-py3-none-any.whl", hash = "sha256:62c811e46bd09130fb11ab759012a4ae385ce4fb2073442d1898867a824183bd"},
-    {file = "prompt_toolkit-3.0.16.tar.gz", hash = "sha256:0fa02fa80363844a4ab4b8d6891f62dd0645ba672723130423ca4037b80c1974"},
+    {file = "prompt_toolkit-3.0.17-py3-none-any.whl", hash = "sha256:4cea7d09e46723885cb8bc54678175453e5071e9449821dce6f017b1d1fbfc1a"},
+    {file = "prompt_toolkit-3.0.17.tar.gz", hash = "sha256:9397a7162cf45449147ad6042fa37983a081b8a73363a5253dd4072666333137"},
 ]
 psutil = [
     {file = "psutil-5.8.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:0066a82f7b1b37d334e68697faba68e5ad5e858279fd6351c8ca6024e8d6ba64"},

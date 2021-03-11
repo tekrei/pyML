@@ -6,29 +6,16 @@ Different machine learning algorithm implementations, inspired from various reso
 
 1. Install dependencies
 
-       poetry update
+   poetry update
 
 2. Start JypterLab
 
-       poetry run jupyter lab
+   poetry run jupyter lab
 
-    or
+   or
 
-       poetry shell
-       jupyter lab
-
-## Package Management
-
-We are using [poetry](https://python-poetry.org/) Python package and dependency manager.
-
-- Init interactively `poetry init`
-- Add package `poetry add package-name`
-- Remove package `poetry remove package-name`
-- Install dependencies `poetry install`
-- Update dependencies `poetry update`
-- Show available packages `poetry show`
-- Run a command in the virtualenv `poetry run command`
-- Open virtualenv `poetry shell`
+   poetry shell
+   jupyter lab
 
 ## Implemented Algorithms
 
@@ -50,3 +37,16 @@ We are using [poetry](https://python-poetry.org/) Python package and dependency 
 - [Algorithms From Scratch](http://machinelearningmastery.com/category/algorithms-from-scratch/)
 - [Kaggle](https://www.kaggle.com/)
 - [UCI Machine Learning Resources](https://archive.ics.uci.edu/ml/index.php)
+
+## Package Management
+
+We are using [poetry](https://python-poetry.org/) Python package and dependency manager.
+
+- Init interactively `poetry init`
+- Add package `poetry add package-name`
+- Remove package `poetry remove package-name`
+- Install dependencies `poetry install`
+- Update dependencies `poetry update`
+- Show available packages `poetry show`
+- Run a command in the virtualenv `poetry run command`
+- Open virtualenv `poetry shell`
