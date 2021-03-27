@@ -1,0 +1,7 @@
+# For more information <https://spdx.dev/specifications/>
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+PackageName: pyml
+PackageOriginator: T. E. Kalayci
+PackageHomePage: https://github.com/tekrei/pyML
+PackageLicenseDeclared: Apache-2.0

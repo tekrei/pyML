@@ -1,26 +1,63 @@
-from os.path import isfile
-from urllib.request import urlretrieve
+#     utility.py belongs to pyML
+#
+#     Copyright 2021 T. E. Kalayci
+#     SPDX-License-Identifier: Apache-2.0
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.
 
-from itertools import product
-from random import random
+#     utility.py belongs to pyML
+#
+#
+#     Licensed under the Apache License, Version 2.0 (the "License");
+#     you may not use this file except in compliance with the License.
+#     You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.
+
 import gzip
 import pickle
-import numpy as np
+import sys
+from itertools import product
+from os.path import isfile
+from random import random
+from urllib.request import urlretrieve
+
 import matplotlib.pyplot as plot
+import numpy as np
 import pandas as pd
 from sklearn.metrics import *
 from sklearn.preprocessing import label_binarize
+
 
 def sigmoid(x):
     """ the sigmoid function """
     return 1.0 / (1.0 + np.exp(-x))
 
+
 def sigmoid_prime(z):
     """ derivative of the sigmoid function """
     return sigmoid(z) * (1 - sigmoid(z))
 
-def euclidean(A, B):
-    return sum(np.sqrt((A - B)**2))
+
+def euclidean(x, y):
+    return sum(np.sqrt((x - y) ** 2))
+
 
 def check_and_download(data_file, data_url):
     if not isfile(data_file):
@@ -28,9 +65,10 @@ def check_and_download(data_file, data_url):
         try:
             urlretrieve(data_url, data_file)
             print(f"Downloaded data file to {data_file}")
-        except Error:
+        except:
             print(f"Can't access or download the data set. Please try to download it manually and put into {data_file}")
             sys.exit()
+
 
 def load_dataset(data_file, split=True, binarize=False):
     dataset = pd.read_csv(data_file, sep=",").sample(
@@ -45,11 +83,11 @@ def load_dataset(data_file, split=True, binarize=False):
 
 
 def get_accuracy(actual, predictions):
-    totalCount = len(actual)
-    wrongCount = (actual != predictions).sum()
+    total_count = len(actual)
+    wrong_count = (actual != predictions).sum()
     print("Number of mislabeled points out of a total %d points : %d" % (
-        totalCount, wrongCount))
-    return (totalCount - wrongCount) / totalCount * 100.0
+        total_count, wrong_count))
+    return (total_count - wrong_count) / total_count * 100.0
 
 
 def display(actual, predictions, save=None):
@@ -92,7 +130,8 @@ def roc_auc(actual, predictions, average='weighted'):
     return roc_auc_score(label_binarize(actual, class_names), label_binarize(predictions, class_names), average=average)
 
 
-def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix', cmap=plot.cm.Blues):
+def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix',
+                          cmap=plot.cm.get_cmap("Blues")):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
@@ -160,12 +199,13 @@ def load_data():
     """
     data_file = "./data/mnist.pkl.gz"
     # Note: it is around 17MB
-    check_and_download(data_file, "https://github.com/mnielsen/neural-networks-and-deep-learning/raw/master/data/mnist.pkl.gz")
+    check_and_download(data_file,
+                       "https://github.com/mnielsen/neural-networks-and-deep-learning/raw/master/data/mnist.pkl.gz")
     f = gzip.open(data_file, 'rb')
     training_data, validation_data, test_data = pickle.load(
         f, encoding="latin1")
     f.close()
-    return (training_data, validation_data, test_data)
+    return training_data, validation_data, test_data
 
 
 def prepare_data():
@@ -194,7 +234,7 @@ def prepare_data():
     validation_data = zip(validation_inputs, va_d[1])
     test_inputs = [np.reshape(x, (784, 1)) for x in te_d[0]]
     test_data = zip(test_inputs, te_d[1])
-    return (list(training_data), list(validation_data), list(test_data))
+    return list(training_data), list(validation_data), list(test_data)
 
 
 def vectorized_result(j):

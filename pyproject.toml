@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "pyml"
 version = "0.1.0"
-description = ""
-authors = ["T. E. Kalayci <tekrei@gmail.com>"]
+description = "Simple project to implement various ML techniques"
+authors = ["T. E. Kalayci"]
+license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -16,17 +17,18 @@ easydict = "^1.9"
 plydata = "^0.4.3"
 pysistence = "^0.4"
 # Visualization
-matplotlib = "^3.3"
+matplotlib = "^3.4"
 seaborn = "^0.11"
 plotly = "^4.14"
 # JupyterLab
+jupyter = "^1.0"
 jupyterlab = "^3.0"
-ipympl = "^0.6"
+ipympl = "^0.7"
 ipywidgets = "^7.6"
 jupyterlab-widgets = "^1.0"
 jupyterlab_code_formatter = "^1.4"
 black = "^20.8b1"
-isort = "^5.7"
+isort = "^5.8"
 jupyterlab-drawio = "^0.8"
 lckr-jupyterlab-variableinspector = "^3.0"
 jupyterlab-dash = "^0.1.0-alpha.3"
