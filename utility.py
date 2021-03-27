@@ -15,16 +15,15 @@
 
 import gzip
 import pickle
-import sys
 from itertools import product
 from os.path import isfile
 from random import random
-from urllib.request import urlretrieve
 
 import matplotlib.pyplot as plot
 import numpy as np
 import pandas as pd
-from sklearn.metrics import *
+import requests
+from sklearn import metrics
 from sklearn.preprocessing import label_binarize
 
 
@@ -42,18 +41,16 @@ def euclidean(x, y):
     return sum(np.sqrt((x - y) ** 2))
 
 
-def check_and_download(data_file, data_url):
+def check_and_download(data_file: str, data_url: str):
     if not isfile(data_file):
         print(f"{data_file} doesn't exists, will download")
-        try:
-            urlretrieve(data_url, data_file)
+        downloaded_file = requests.get(data_url)
+        with open(data_file, 'wb') as file:
+            file.write(downloaded_file.content)
             print(f"Downloaded data file to {data_file}")
-        except:
-            print(f"Can't access or download the data set. Please try to download it manually and put into {data_file}")
-            sys.exit()
 
 
-def load_dataset(data_file, split=True, binarize=False):
+def load_dataset(data_file: str, split: bool = True, binarize: bool = False):
     dataset = pd.read_csv(data_file, sep=",").sample(
         frac=1).reset_index(drop=True)
     if not split:
@@ -65,7 +62,8 @@ def load_dataset(data_file, split=True, binarize=False):
     return dataset, target
 
 
-def get_accuracy(actual, predictions):
+def get_accuracy(actual: np.ndarray, predictions: np.ndarray):
+    print(type(actual), type(predictions))
     total_count = len(actual)
     wrong_count = (actual != predictions).sum()
     print("Number of mislabeled points out of a total %d points : %d" % (
@@ -73,17 +71,17 @@ def get_accuracy(actual, predictions):
     return (total_count - wrong_count) / total_count * 100.0
 
 
-def display(actual, predictions, save=None):
-    print(f"Accuracy: {accuracy_score(actual, predictions)}")
-    print(f"Precision: {precision_score(actual, predictions, average='weighted')}")
-    print(f"Recall: {recall_score(actual, predictions, average='weighted')}")
-    f1 = f1_score(actual, predictions, average="weighted")
+def display(actual: np.ndarray, predictions: np.ndarray, save=None):
+    print(f"Accuracy: {metrics.accuracy_score(actual, predictions)}")
+    print(f"Precision: {metrics.precision_score(actual, predictions, average='weighted')}")
+    print(f"Recall: {metrics.recall_score(actual, predictions, average='weighted')}")
+    f1 = metrics.f1_score(actual, predictions, average="weighted")
     print(f"F1 score: {f1}")
     roc = roc_auc(actual, predictions)
     print(f"ROC AUC Score: {roc}")
     # plot non-normalized confusion matrix
     plot_confusion_matrix(actual, predictions, save)
-    return [f1, roc]
+    # return [f1, roc]
 
 
 def plot_scores(scores, names, save=None):
@@ -108,21 +106,25 @@ def binarize_labels(actual):
 
 
 def roc_auc(actual, predictions, average='weighted'):
-    class_names = list(set(actual))
+    classes = list(set(actual))
     # use binarized values for AUC score calculation
-    return roc_auc_score(label_binarize(actual, class_names), label_binarize(predictions, class_names), average=average)
+    return metrics.roc_auc_score(
+        y_true=label_binarize(y=actual, classes=classes),
+        y_score=label_binarize(y=predictions, classes=classes),
+        average=average)
 
 
-def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix'):
+def plot_confusion_matrix(actual: np.ndarray, predictions: np.ndarray, save: bool = False, normalize: bool = False,
+                          title: str = "Confusion matrix"):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
     Source: http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
     """
-    cm = confusion_matrix(y_true=actual, y_pred=predictions)
+    cm = metrics.confusion_matrix(y_true=actual, y_pred=predictions)
     classes = list(set(actual))
     plot.figure()
-    plot.imshow(cm, interpolation='nearest')
+    plot.imshow(cm, interpolation='nearest', cmap=plot.cm.get_cmap("Blues"))
     plot.title(title)
     plot.colorbar()
     tick_marks = np.arange(len(classes))
@@ -132,10 +134,10 @@ def plot_confusion_matrix(actual, predictions, save=False, normalize=False, titl
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-    thresh = cm.max() / 2.0
+    threshold = cm.max() / 2.0
     for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
         plot.text(j, i, cm[i, j], horizontalalignment="center",
-                  color="white" if cm[i, j] > thresh else "black")
+                  color="white" if cm[i, j] > threshold else "black")
     plot.ylabel('True label')
     plot.xlabel('Predicted label')
     if save:
