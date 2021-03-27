@@ -113,17 +113,16 @@ def roc_auc(actual, predictions, average='weighted'):
     return roc_auc_score(label_binarize(actual, class_names), label_binarize(predictions, class_names), average=average)
 
 
-def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix',
-                          cmap=plot.cm.get_cmap("Blues")):
+def plot_confusion_matrix(actual, predictions, save=False, normalize=False, title='Confusion matrix'):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
     Source: http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
     """
-    cm = confusion_matrix(actual, predictions)
+    cm = confusion_matrix(y_true=actual, y_pred=predictions)
     classes = list(set(actual))
     plot.figure()
-    plot.imshow(cm, interpolation='nearest', cmap=cmap)
+    plot.imshow(cm, interpolation='nearest')
     plot.title(title)
     plot.colorbar()
     tick_marks = np.arange(len(classes))

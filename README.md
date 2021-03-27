@@ -9,7 +9,7 @@ Install dependencies
 
     poetry update
 
-Start JypterLab
+Start JupyterLab
 
     poetry run jupyter lab
 
@@ -32,6 +32,7 @@ or
 - [Perceptron](https://en.wikipedia.org/wiki/Perceptron)
 - [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)
 - [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree)
+- [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression)
 
 ### Links & Resources
 
