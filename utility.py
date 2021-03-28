@@ -27,8 +27,14 @@ from sklearn import metrics
 from sklearn.preprocessing import label_binarize
 
 
+def logistic_function(x):
+    return .5 * (1 + np.tanh(.5 * x))
+
+
 def sigmoid(x):
     """ the sigmoid function """
+    # it is possible and better to use
+    # [scipy.special.expit](https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.expit.html)
     return 1.0 / (1.0 + np.exp(-x))
 
 
@@ -71,7 +77,7 @@ def get_accuracy(actual: np.ndarray, predictions: np.ndarray):
     return (total_count - wrong_count) / total_count * 100.0
 
 
-def display(actual: np.ndarray, predictions: np.ndarray, save=None):
+def display(actual: np.ndarray, predictions: np.ndarray, save: str = None):
     print(f"Accuracy: {metrics.accuracy_score(actual, predictions)}")
     print(f"Precision: {metrics.precision_score(actual, predictions, average='weighted')}")
     print(f"Recall: {metrics.recall_score(actual, predictions, average='weighted')}")
@@ -81,10 +87,10 @@ def display(actual: np.ndarray, predictions: np.ndarray, save=None):
     print(f"ROC AUC Score: {roc}")
     # plot non-normalized confusion matrix
     plot_confusion_matrix(actual, predictions, save)
-    # return [f1, roc]
+    return [f1, roc]
 
 
-def plot_scores(scores, names, save=None):
+def plot_scores(scores, names: str, save: str = None):
     scores = np.asarray(scores)
     # roc_auc and f1 plot
     plot.figure()
@@ -93,8 +99,8 @@ def plot_scores(scores, names, save=None):
         plot.annotate(txt, (scores[i, 0], scores[i, 1]))
     plot.xlim(xmax=1.0)
     plot.ylim(ymax=1.0)
-    plot.ylabel('ROC AUC Score')
     plot.xlabel('F1 score')
+    plot.ylabel('ROC AUC Score')
     if save:
         plot.savefig(save)
     else:
@@ -114,7 +120,7 @@ def roc_auc(actual, predictions, average='weighted'):
         average=average)
 
 
-def plot_confusion_matrix(actual: np.ndarray, predictions: np.ndarray, save: bool = False, normalize: bool = False,
+def plot_confusion_matrix(actual: np.ndarray, predictions: np.ndarray, save: str = None, normalize: bool = False,
                           title: str = "Confusion matrix"):
     """
     This function prints and plots the confusion matrix.
@@ -203,7 +209,7 @@ def prepare_data():
     correct digit for ``x``.
     ``validation_data`` and ``test_data`` are lists containing 10,000
     2-tuples ``(x, y)``.  In each case, ``x`` is a 784-dimensional
-    numpy.ndarry containing the input image, and ``y`` is the
+    numpy.ndarray containing the input image, and ``y`` is the
     corresponding classification, i.e., the digit values (integers)
     corresponding to ``x``.
     Obviously, this means we're using slightly different formats for
