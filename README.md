@@ -1,6 +1,6 @@
-# pyML: Machine Learning Implementations, Experiments in Python
+# Machine Learning Implementations in Python
 
-Different machine learning algorithm implementations, inspired from various resources. We are
+This repository contains different machine learning algorithm implementations, inspired from resources. It is
 using [Jupyter notebooks](https://jupyter.org/) and [JupyterLab](http://jupyterlab.io/).
 
 ## Usage
@@ -20,19 +20,22 @@ or
 
 ## Implemented Algorithms
 
-- Optimization and root finding:
+- Comparison of various classification models from [
+  scikit-learn)(http://scikit-learn.org/): [model_comparison.ipynb](./model_comparison.ipynb)
+- Optimization and root finding: [optimization.ipynb](./optimization.ipynb)
   - [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent)
   - [Bisection Method](https://en.wikipedia.org/wiki/Bisection_method)
   - [Secant Method](https://en.wikipedia.org/wiki/Secant_method)
   - [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method)
-- [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression)
-- [K-Means](https://en.wikipedia.org/wiki/K-means_clustering)
-- [K-Nearest Neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
-- [Naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)
-- [Perceptron](https://en.wikipedia.org/wiki/Perceptron)
-- [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)
-- [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree)
-- [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression)
+- [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression): [linear_regression.ipynb](./linear_regression.ipynb)
+- [K-Means](https://en.wikipedia.org/wiki/K-means_clustering): [kmeans.ipynb](./kmeans.ipynb)
+- [K-Nearest Neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm):  [knn.ipynb](./knn.ipynb)
+- [Naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier):  [naive_bayes.ipynb](./naive_bayes.ipynb)
+- [Perceptron](https://en.wikipedia.org/wiki/Perceptron):  [perceptron.ipynb](./perceptron.ipynb)
+- [Backpropagation](https://en.wikipedia.org/wiki/Backpropagation):  [backpropagation.ipynb](./backpropagation.ipynb)
+- [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree):  [decision_tree.ipynb](./decision_tree.ipynb)
+- [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression):  [logistic_regression.ipynb](./logistic_regression.ipynb)
+- [Feedforward Neural Network](https://en.wikipedia.org/wiki/Feedforward_neural_network):  [feedforward.ipynb](./feedforward.ipynb)
 
 ### Links & Resources
 
@@ -46,7 +49,7 @@ or
 
 ## Package Management
 
-We are using [poetry](https://python-poetry.org/) Python package and dependency manager.
+This project is using [poetry](https://python-poetry.org/) Python package and dependency manager.
 
 - Init interactively `poetry init`
 - Add package `poetry add package-name`
