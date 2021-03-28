@@ -36,6 +36,7 @@ or
 - [Decision Tree](https://en.wikipedia.org/wiki/Decision_tree):  [decision_tree.ipynb](./decision_tree.ipynb)
 - [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression):  [logistic_regression.ipynb](./logistic_regression.ipynb)
 - [Feedforward Neural Network](https://en.wikipedia.org/wiki/Feedforward_neural_network):  [feedforward.ipynb](./feedforward.ipynb)
+- [Support Vector Machine](https://en.wikipedia.org/wiki/Support-vector_machine): [svm.ipynb](./svm.ipynb)
 
 ### Links & Resources
 
