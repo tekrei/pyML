@@ -20,7 +20,7 @@ or
 
 ## Implemented Algorithms
 
-- Comparison of various classification models from [scikit-learn)(http://scikit-learn.org/): [model_comparison.ipynb](./model_comparison.ipynb)
+- Comparison of various classification models from [scikit-learn](http://scikit-learn.org/): [model_comparison.ipynb](./model_comparison.ipynb)
 - Optimization and root finding: [optimization.ipynb](./optimization.ipynb)
   - [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent)
   - [Bisection Method](https://en.wikipedia.org/wiki/Bisection_method)
