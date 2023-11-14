@@ -6,7 +6,7 @@ authors = ["T. E. Kalayci"]
 license = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.13"
+python = "~3.11"
 # DS Libraries
 easydict = "^1.9"
 numpy = "^1.26"
@@ -14,7 +14,7 @@ pandas = "^2.1"
 plydata = "^0.4"
 pysistence = "^0.4"
 requests = "*"
-scipy = "^1.6"
+scipy = "^1.11"
 scikit-learn = "^1.3"
 # Visualization
 matplotlib = "^3.4"
