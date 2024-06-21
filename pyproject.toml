@@ -8,7 +8,7 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = "^3.12"
 # DS Libraries
-numpy = "*"
+numpy = "^1.26"
 pandas = "*"
 requests = "*"
 scipy = "*"
