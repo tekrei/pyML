@@ -21,6 +21,7 @@ plotly = "*"
 # JupyterLab
 jupyter = "*"
 jupyterlab = "^4.0"
+notebook = "*"
 ipympl = "*"
 ipywidgets = "*"
 jupyterlab-widgets = "*"
@@ -33,7 +34,6 @@ jupyterlab-git = "*"
 autopep8 = "*"
 black = "*"
 isort = "*"
-pytest = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
