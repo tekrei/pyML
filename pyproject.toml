@@ -1,40 +1,44 @@
-[tool.poetry]
+[tool.pdm.build]
+includes = []
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+authors = [
+    {name = "T. E. Kalayci"},
+]
+license = {text = "Apache-2.0"}
 name = "pyml"
 version = "0.1.0"
 description = "Simple project to implement various ML techniques"
-authors = ["T. E. Kalayci"]
-license = "Apache-2.0"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-# DS Libraries
-numpy = "*"
-pandas = "*"
-requests = "*"
-scipy = "*"
-scikit-learn = "*"
-# Visualization
-dash = "*"
-matplotlib = "*"
-seaborn = "*"
-plotly = "*"
-# JupyterLab
-jupyter = "*"
-jupyterlab = "^4.0"
-notebook = "*"
-ipympl = "*"
-ipywidgets = "*"
-jupyterlab-widgets = "*"
-jupyterlab-code-formatter = "*"
-lckr-jupyterlab-variableinspector = "*"
-jupyterlab-execute-time = "*"
-jupyterlab-git = "*"
+requires-python = "<4.0,>=3.12"
+dependencies = [
+    "numpy",
+    "pandas",
+    "requests",
+    "scipy",
+    "scikit-learn",
+    "dash",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "jupyter",
+    "jupyterlab<5.0,>=4.0",
+    "notebook",
+    "ipympl",
+    "ipywidgets",
+    "jupyterlab-widgets",
+    "jupyterlab-code-formatter",
+    "lckr-jupyterlab-variableinspector",
+    "jupyterlab-execute-time",
+    "jupyterlab-git",
+]
 
-[tool.poetry.dev-dependencies]
-autopep8 = "*"
-black = "*"
-isort = "*"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "autopep8",
+    "black",
+    "isort",
+]

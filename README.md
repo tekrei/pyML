@@ -7,16 +7,18 @@ using [Jupyter notebooks](https://jupyter.org/) and [JupyterLab](http://jupyterl
 
 Install dependencies
 
-    poetry update
+```bash
+# create lockfile
+uv lock
+# sync dependencies
+uv sync
+```
 
 Start JupyterLab
 
-    poetry run jupyter lab
-
-or
-
-    poetry shell
-    jupyter lab
+```bash
+uv run jupyter lab
+```
 
 ## Implemented Algorithms
 
@@ -48,15 +50,15 @@ or
 - [Kaggle](https://www.kaggle.com/)
 - [UCI Machine Learning Resources](https://archive.ics.uci.edu/ml/index.php)
 
-## Package Management
+## Package management
 
-This project is using [poetry](https://python-poetry.org/) Python package and dependency manager.
+We are using [uv](https://docs.astral.sh/uv/getting-started/) Python package and dependency
+manager.
 
-- Init interactively `poetry init`
-- Add package `poetry add package-name`
-- Remove package `poetry remove package-name`
-- Install dependencies `poetry install`
-- Update dependencies `poetry update`
-- Show available packages `poetry show`
-- Run a command in the virtualenv `poetry run command`
-- Open virtualenv `poetry shell`
+- Init interactively `uv init`
+- Add package `uv add package-name`
+- Remove package `uv remove package-name`
+- Create lockfile `uv lock`
+- Update dependencies `uv sync`
+- Show available packages `uv show`
+- Run a command in the virtualenv `uv run command`
